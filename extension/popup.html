@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL Phishing Detector</title>
+    <style>
+        body {
+            width: 350px;
+            padding: 20px;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            background: #f8f9fa;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0;
+        }
+
+        .url-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            word-break: break-all;
+        }
+
+        .current-url {
+            font-size: 14px;
+            color: #2c3e50;
+            margin: 0;
+            font-family: monospace;
+        }
+
+        .result-container {
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .safe {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .unsafe {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            background: #cce5ff;
+            color: #004085;
+            border: 1px solid #b8daff;
+        }
+
+        .status-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .result-text {
+            font-size: 14px;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .details {
+            background: #fff;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 13px;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+
+        .scan-button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .scan-button:hover {
+            background: #0056b3;
+        }
+
+        .scan-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="icon48.png" alt="Logo" class="logo">
+            <h1 class="title">URL Phishing Detector</h1>
+        </div>
+
+        <div class="url-container">
+            <p class="current-url" id="currentUrl">Loading current URL...</p>
+        </div>
+
+        <div id="resultContainer" class="result-container loading">
+            <img src="loading.png" alt="Status" class="status-icon" id="statusIcon">
+            <p class="result-text" id="resultText">Analyzing URL...</p>
+        </div>
+
+        <div class="details" id="details">
+            Click "Scan URL" to check if the current website is safe.
+        </div>
+
+        <button class="scan-button" id="scanButton">
+            Scan URL
+            <div class="spinner" id="spinner"></div>
+        </button>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

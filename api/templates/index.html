@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ML Phishing Detector Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .input-group {
+            margin: 20px 0;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .safe {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .danger {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+    </style>
+</head>
+<body>
+    <h1>ML Phishing Detector Demo</h1>
+    <div class="input-group">
+        <input type="text" id="urlInput" placeholder="Enter URL to check (e.g., https://www.google.com)" />
+        <button onclick="checkUrl()">Check URL</button>
+    </div>
+    <div id="result" class="result" style="display: none;"></div>
+
+    <h2>Sample URLs to Try:</h2>
+    <h3>Safe URLs:</h3>
+    <ul>
+        <li>https://www.google.com</li>
+        <li>https://www.microsoft.com</li>
+        <li>https://www.github.com</li>
+    </ul>
+    <h3>Suspicious URLs:</h3>
+    <ul>
+        <li>http://secure-paypal.com.verify.account.com</li>
+        <li>https://banking.secure-login.com</li>
+        <li>http://amazon.account-verify.net</li>
+    </ul>
+
+    <script>
+        function checkUrl() {
+            const url = document.getElementById('urlInput').value;
+            const resultDiv = document.getElementById('result');
+            
+            fetch('http://localhost:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url: url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultDiv.style.display = 'block';
+                if (data.is_phishing) {
+                    resultDiv.className = 'result danger';
+                    resultDiv.innerHTML = `
+                        <h3>⚠️ Warning: Potential Phishing Site!</h3>
+                        <p>This URL has been detected as potentially malicious.</p>
+                        <p>Confidence: ${(data.probability * 100).toFixed(2)}%</p>
+                    `;
+                } else {
+                    resultDiv.className = 'result safe';
+                    resultDiv.innerHTML = `
+                        <h3>✅ Safe Website</h3>
+                        <p>This URL appears to be legitimate.</p>
+                        <p>Confidence: ${((1 - data.probability) * 100).toFixed(2)}%</p>
+                    `;
+                }
+            })
+            .catch(error => {
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result danger';
+                resultDiv.innerHTML = `
+                    <h3>❌ Error</h3>
+                    <p>Could not analyze URL: ${error.message}</p>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
