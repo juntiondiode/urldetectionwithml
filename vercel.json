@@ -15,9 +15,5 @@
             "src": "/(.*)",
             "dest": "api/app.py"
         }
-    ],
-    "env": {
-        "PYTHONPATH": ".",
-        "PYTHON_VERSION": "3.9"
-    }
+    ]
 }
