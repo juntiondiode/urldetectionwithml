@@ -39,3 +39,5 @@ ENV/
 # Local development
 .env
 .DS_Store
+
+.vercel

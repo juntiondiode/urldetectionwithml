@@ -1,0 +1,10 @@
+[build]
+builder = "python"
+buildpacks = ["python"]
+
+[deploy]
+startCommand = "gunicorn api.app:app"
+port = 5000
+
+[env]
+PYTHON_VERSION = "3.9"
